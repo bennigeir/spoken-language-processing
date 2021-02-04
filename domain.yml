@@ -1,33 +1,93 @@
 version: "2.0"
 
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+
 
 responses:
-  utter_greet:
-  - text: "Hey! How are you?"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+entities:
+  - aircraft
+  - airline
+  - airport
+  - city:   # Does this imply states?
+      roles:
+      - from
+      - here
+      - to
+  - class
+  - compartment
+  - connect
+  - cost
+  - date:
+      roles:
+      - arrival
+      - departure
+      - now   # ?
+  - flight
+  - meal
+  - or
+  - restriction_code # Do we need this?
+  - round-trip
+  - transport
 
-  utter_happy:
-  - text: "Great, carry on!"
+slots:
+  aircraft:
+    type: text
+    inluence_conversation: false
+  airline:
+    type: text
+    inluence_conversation: false
+  airport:
+    type: text
+    inluence_conversation: false
+  to_city:
+    type: text
+    inluence_conversation: false
+  from_city:
+    type: text
+    influence_conversation: false
+  class:
+    type: text
+    influence_conversation: false
+  compartment:
+    type: text
+    influence_conversation: false
+  connect:
+    type: bool # ?
+    influence_conversation: false
+  cost:
+    type: text # Maybe float type?
+    influence_conversation: false
+  arrival_date:
+    type: text
+    influence_conversation: false
+  departure_date:
+    type: text
+    influence_conversation: false
+  flight:
+    type: text
+    influence_conversation: false
+  meal:
+    type: text
+    influence_conversation: false
+  or:
+    type: text
+    influence_conversation: false
+  restriction_code:  # Necessary?
+    type: text
+    influence_conversation: false
+  round-trip:
+    type: bool # ?
+    influence_conversation: false
+  transport:
+    type: text
+    influence_conversation: false
 
-  utter_goodbye:
-  - text: "Bye"
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+
+
+
 
 session_config:
   session_expiration_time: 60
