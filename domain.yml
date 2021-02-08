@@ -29,6 +29,7 @@ entities:
   - or
   - restriction_code # Do we need this?
   - round-trip
+  - time # the same as date?
   - transport
 
 slots:
@@ -79,6 +80,9 @@ slots:
     influence_conversation: false
   round-trip:
     type: bool # ?
+    influence_conversation: false
+  time:
+    type: text
     influence_conversation: false
   transport:
     type: text
