@@ -9,27 +9,41 @@ responses:
 entities:
   - aircraft
   - airline
-  - airport
-  - city:   # Does this imply states?
+  - airport:
+      roles:
+      - to
+      - from
+      - connect
+  - location:   # Does this imply states?
       roles:
       - from
-      - here
       - to
-  - class
-  - compartment
-  - connect
-  - cost
+      - connect
+  - booking:
+      roles:
+      - connect
+      - or
+      - round-trip
+      - compartment
+      - class
+  - cost:
+      roles:
+      - amount
+      - budget
   - date:
       roles:
       - arrival
       - departure
-      - now   # ?
+      - now
+      - return # ?
   - flight
   - meal
-  - or
-  - restriction_code # Do we need this?
-  - round-trip
-  - time # the same as date?
+  #- restriction_code
+  - time:
+      roles:
+      - arrival
+      - departure
+      - now
   - transport
 
 slots:
@@ -39,49 +53,73 @@ slots:
   airline:
     type: text
     inluence_conversation: false
-  airport:
+  airport_to:
     type: text
     inluence_conversation: false
-  to_city:
+  airport_from:
     type: text
     inluence_conversation: false
-  from_city:
+  airport_connect:
     type: text
     influence_conversation: false
-  class:
-    type: text
-    influence_conversation: false
-  compartment:
-    type: text
-    influence_conversation: false
-  connect:
+  booking_connect:
     type: bool # ?
     influence_conversation: false
-  cost:
+  booking_or:
+    type: bool # ?
+    influence_conversation: false
+  booking_round_trip:
+    type: bool # ?
+    influence_conversation: false
+  booking_compartment:
+    type: bool # ?
+    influence_conversation: false
+  booking_class:
+    type: bool # ?
+    influence_conversation: false
+  cost_amount:
     type: text # Maybe float type?
     influence_conversation: false
-  arrival_date:
+  cost_budeget:
     type: text
     influence_conversation: false
-  departure_date:
+  date_arrival:
+    type: text
+    influence_conversation: false
+  date_departure:
+    type: text
+    influence_conversation: false
+  date_now:
+    type: text
+    influence_conversation: false
+  date_return:
     type: text
     influence_conversation: false
   flight:
     type: text
     influence_conversation: false
+  location_to:
+    type: text
+    inluence_conversation: false
+  location_from:
+    type: text
+    influence_conversation: false
+  location_connect:
+    type: text
+    influence_conversation: false
   meal:
     type: text
     influence_conversation: false
-  or:
+  # restriction_code:  # Necessary?
+  #   type: text
+  #   influence_conversation: false
+  time_arrival:
     type: text
     influence_conversation: false
-  restriction_code:  # Necessary?
+  time_departure:
     type: text
     influence_conversation: false
-  round-trip:
-    type: bool # ?
-    influence_conversation: false
-  time:
+  time_now:
     type: text
     influence_conversation: false
   transport:
