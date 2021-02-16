@@ -1,33 +1,146 @@
 version: "2.0"
 
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - atis_abbreviation
+  - atis_aircraft
+  - atis_airfare
+  - atis_airline
+  - atis_airport
+  - atis_capacity
+  - atis_cheapest
+  - atis_city
+  - atis_day_name
+  - atis_distance
+  - atis_flight
+  - atis_flight_no
+  - atis_flight_time
+  - atis_ground_fare
+  - atis_ground_service
+  - atis_meal
+  - atis_quantity
 
 responses:
-  utter_greet:
-  - text: "Hey! How are you?"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+entities:
+  - aircraft
+  - airline
+  - airport:
+      roles:
+      - to
+      - from
+      - connect
+  - location:   
+      roles:
+      - from
+      - to
+      - connect
+  - booking:
+      roles:
+      - connect
+      - or
+      - round-trip
+      - compartment
+      - class
+  - cost:
+      roles:
+      - amount
+      - budget
+  - date:
+      roles:
+      - arrival
+      - departure
+      - return # ?
+  - flight
+  - meal
+  #- restriction_code
+  - time:
+      roles:
+      - arrival
+      - departure
+  - transport
 
-  utter_happy:
-  - text: "Great, carry on!"
+slots:
+  aircraft:
+    type: text
+    inluence_conversation: false
+  airline:
+    type: text
+    inluence_conversation: false
+  airport_to:
+    type: text
+    inluence_conversation: false
+  airport_from:
+    type: text
+    inluence_conversation: false
+  airport_connect:
+    type: text
+    influence_conversation: false
+  booking_connect:
+    type: bool # ?
+    influence_conversation: false
+  booking_or:
+    type: bool # ?
+    influence_conversation: false
+  booking_round_trip:
+    type: bool # ?
+    influence_conversation: false
+  booking_compartment:
+    type: bool # ?
+    influence_conversation: false
+  booking_class:
+    type: bool # ?
+    influence_conversation: false
+  cost_amount:
+    type: text # Maybe float type?
+    influence_conversation: false
+  cost_budeget:
+    type: text
+    influence_conversation: false
+  date_arrival:
+    type: text
+    influence_conversation: false
+  date_departure:
+    type: text
+    influence_conversation: false
+  date_now:
+    type: text
+    influence_conversation: false
+  date_return:
+    type: text
+    influence_conversation: false
+  flight:
+    type: text
+    influence_conversation: false
+  location_to:
+    type: text
+    inluence_conversation: false
+  location_from:
+    type: text
+    influence_conversation: false
+  location_connect:
+    type: text
+    influence_conversation: false
+  meal:
+    type: text
+    influence_conversation: false
+  time_arrival:
+    type: text
+    influence_conversation: false
+  time_departure:
+    type: text
+    influence_conversation: false
+  time_now:
+    type: text
+    influence_conversation: false
+  transport:
+    type: text
+    influence_conversation: false
 
-  utter_goodbye:
-  - text: "Bye"
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+
+
+
 
 session_config:
   session_expiration_time: 60
