@@ -1,11 +1,7 @@
 version: "2.0"
 
 intents:
-<<<<<<< HEAD
   - atis_abbreviaton
-=======
-  - atis_abbreviation
->>>>>>> 8464509fbd7a2f1cfd2beb3d4f90006e333ca1eb
   - atis_aircraft
   - atis_airfare
   - atis_airline
@@ -22,10 +18,7 @@ intents:
   - atis_ground_service
   - atis_meal
   - atis_quantity
-<<<<<<< HEAD
   - chitchat
-=======
->>>>>>> 8464509fbd7a2f1cfd2beb3d4f90006e333ca1eb
 
 responses:
   utter_purpose:
@@ -37,7 +30,7 @@ responses:
     - Bless
     - Bæ
   utter_ask_day_to:
-    - Hvenær vilt þú fara til {location_to}
+    - Hvenær vilt þú fara til {location_to}?
   utter_ask_day_from:
   utter_ask_time_to:
   utter_ask_time_from:
