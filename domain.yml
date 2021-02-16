@@ -1,7 +1,11 @@
 version: "2.0"
 
 intents:
+<<<<<<< HEAD
   - atis_abbreviaton
+=======
+  - atis_abbreviation
+>>>>>>> 8464509fbd7a2f1cfd2beb3d4f90006e333ca1eb
   - atis_aircraft
   - atis_airfare
   - atis_airline
@@ -18,7 +22,10 @@ intents:
   - atis_ground_service
   - atis_meal
   - atis_quantity
+<<<<<<< HEAD
   - chitchat
+=======
+>>>>>>> 8464509fbd7a2f1cfd2beb3d4f90006e333ca1eb
 
 responses:
   utter_purpose:
@@ -52,7 +59,7 @@ entities:
       - to
       - from
       - connect
-  - location:   # Does this imply states?
+  - location:   
       roles:
       - from
       - to
@@ -72,7 +79,6 @@ entities:
       roles:
       - arrival
       - departure
-      - now
       - return # ?
   - flight
   - meal
@@ -80,7 +86,6 @@ entities:
       roles:
       - arrival
       - departure
-      - now
   - transport
 
 slots:
@@ -147,9 +152,6 @@ slots:
   meal:
     type: text
     influence_conversation: false
-  # restriction_code:  # Necessary?
-  #   type: text
-  #   influence_conversation: false
   time_arrival:
     type: text
     influence_conversation: false
