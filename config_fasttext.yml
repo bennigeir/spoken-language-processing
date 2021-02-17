@@ -14,7 +14,7 @@ pipeline:
      cache_dir: downloaded/beforehand
      file: cc.is.300.bin
    - name: DIETClassifier
-     epochs: 100
+     epochs: 5
    - name: EntitySynonymMapper
    - name: ResponseSelector
      epochs: 100
