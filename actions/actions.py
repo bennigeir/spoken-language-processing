@@ -8,23 +8,9 @@
 # This is a simple example for a custom action which utters "Hello World!"
 
 from typing import Any, Text, Dict, List
-#
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
+from rasa_sdk.events import SlotSet
 
 import requests
 
@@ -42,7 +28,7 @@ airport_dict = {
 
 class ActionGetFlightInfo(Action):
     
-    def get_flights(origin_place, destination_place, outbound_partial_date, inbound_partial_date=''):
+    def get_flights(self, origin_place, destination_place, outbound_partial_date, inbound_partial_date=''):
         
         url = 'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/'
     
@@ -69,8 +55,29 @@ class ActionGetFlightInfo(Action):
         
         return response.json()
     
+    
+    def list_airports(self, query):
+        
+        url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/US/ISK/is-IS/"
+        
+        querystring = {"query":query}
+        
+        headers = {
+            'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
+            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+            }
+        
+        try:
+            response = requests.request("GET", url, headers=headers, params=querystring).json()
+        except:
+            response = ''
+            
+        return response
+    
+    
     def name(self) -> Text:
         return "action_get_flight_info"
+
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -98,23 +105,4 @@ class ActionGetFlightInfo(Action):
         # flights = "Airport 1, Airport 2, Price: 125 USD, Departure time: 11:20 AM, Arrival time: 2:10 PM."
         dispatcher.utter_message("Here are flights from {} to {} on {} with {} for {}".format(from_iata, to_iata, date, carrier, min_price))
 
-        # return [SlotSet("address", address)]
-    
-    '''
-    def list_airports(query):
-        
-        url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/US/ISK/is-IS/"
-        
-        querystring = {"query":query}
-        
-        headers = {
-            'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
-            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
-            }
-        
-        response = requests.request("GET", url, headers=headers, params=querystring)
-    
-        return response.json()['Places']
-    
-    '''
-    
+        return [SlotSet("airline", carrier), SlotSet("airport_to", to_iata), SlotSet("airport_from", from_iata), SlotSet("cost_amount", min_price)]    
