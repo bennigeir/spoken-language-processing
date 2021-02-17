@@ -18,6 +18,10 @@ intents:
   - atis_ground_service
   - atis_meal
   - atis_quantity
+  - greet
+  - goodbye
+  - affirm
+  - deny
   - chitchat
 
 responses:
@@ -37,7 +41,7 @@ responses:
     - text: Hvenær viltu fljúga frá {location_from}?
   utter_ask_time_arrival:
     - text: Hvenær viltu vera kominn til {location_to}?
-  utter_ask_time_departure:
+  # utter_ask_time_departure:
   utter_ask_location_to:
     - text: Hvert viltu fara?
     - text: Hvert ætlar þú?
@@ -45,11 +49,11 @@ responses:
     - text: Hvaðan ert þú að fljúga?
   utter_fallback:
     - text: Afsakið getur þú endurtekið þetta?
-  utter_inform_flight:
-  utter_inform_time:
-  utter_inform_date:
-  utter_ask_class:
-  utter_ask_meal:
+  # utter_inform_flight:
+  # utter_inform_time:
+  # utter_inform_date:
+  # utter_ask_class:
+  # utter_ask_meal:
 
 
 entities:
@@ -92,16 +96,16 @@ entities:
 slots:
   aircraft:
     type: text
-    inluence_conversation: false
+    influence_conversation: false
   airline:
     type: text
-    inluence_conversation: false
+    influence_conversation: false
   airport_to:
     type: text
-    inluence_conversation: false
+    influence_conversation: false
   airport_from:
     type: text
-    inluence_conversation: false
+    influence_conversation: false
   airport_connect:
     type: text
     influence_conversation: false
@@ -143,7 +147,7 @@ slots:
     influence_conversation: false
   location_to:
     type: text
-    inluence_conversation: false
+    influence_conversation: false
   location_from:
     type: text
     influence_conversation: false

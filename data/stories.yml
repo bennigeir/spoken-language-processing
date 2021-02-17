@@ -6,11 +6,11 @@ stories:
   steps:
     - intent: atis_flight
     - slot_was_set:
-      - location_to: New York
-      - date_departure: 2021-02-19
-      - location_from: Keflavík
-    - action: utter_greet
+      - location_to: "New York"
+      # - date_departure: "2021-02-19"
+      # - location_from: Keflavík
     - action: action_get_flight_info
+    # - action: utter_greet
     - action: utter_bye
 
 - story: Flight story 2
@@ -19,9 +19,9 @@ stories:
     - action: utter_greet
     - intent: atis_flight
     - slot_was_set:
-      - location_to: New York
-      - date_departure: 2021-02-19
-      - location_from: Keflavík
+      - location_to: "New York"
+      # - date_departure: "2021-02-19"
+      # - location_from: Keflavík
     - action: action_get_flight_info
     - intent: goodbye
     - action: utter_bye

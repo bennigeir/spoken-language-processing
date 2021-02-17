@@ -15,15 +15,7 @@ from rasa_sdk.events import SlotSet
 import requests
 
 
-airport_dict = {
-        'San Fransisco' : 'SFO-sky',
-        'Chicago' : 'ORD-sky',
-        'New York' : 'JFK-sky',
-        'Stockholm' : 'ARN-sky',
-        'Keflavik' : 'KEF-sky',
-        'Copenhagen' : 'CPH-sky',
-        'Boston' : 'BOS-sky',
-    }
+
 
 
 class ActionGetAirportInfo(Action):  
@@ -66,7 +58,33 @@ class ActionGetAirportInfo(Action):
         
         
         dispatcher.utter_message("Here are airports in {}: {}".format(location, str(response)))
+
+def get_flights(origin_place, destination_place, outbound_partial_date, inbound_partial_date=''):
     
+    url = 'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/'
+
+    data = {
+        'country' : 'US',
+        'currency' : 'ISK',
+        'locale' : 'en-US',
+        'origin_place' : origin_place, #'SFO-sky',
+        'destination_place' : destination_place, #'JFK-sky',
+        'outbound_partial_date' : outbound_partial_date, #'2021-02-05',
+        'inbound_partial_date' : inbound_partial_date, #'',
+    }
+    
+    tmp = [val for key, val in data.items() if len(val) > 0]
+    
+    url += '/'.join(tmp)
+        
+    headers = {
+        'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
+        'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+        }
+    
+    response = requests.request("GET", url, headers=headers)
+    
+    return response.json()    
 
 class ActionGetFlightInfo(Action):
     
@@ -124,27 +142,37 @@ class ActionGetFlightInfo(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        airport_dict = {
+        'San Fransisco' : 'SFO-sky',
+        'Chicago' : 'ORD-sky',
+        'New York' : 'JFK-sky',
+        'Stockholm' : 'ARN-sky',
+        'Keflavik' : 'KEF-sky',
+        'Copenhagen' : 'CPH-sky',
+        'Boston' : 'BOS-sky',
+        }
 
         try:
             location_from = airport_dict[tracker.get_slot("location_from")]
         except:
             location_from = 'KEF-sky'
-            
-        try:
-            location_to = airport_dict[tracker.get_slot("location_to")]
-        except:
-            location_to = 'CPH-sky'
+        # try:
+        location_to = airport_dict[tracker.get_slot("location_to")]
+        print(location_to)
+        # except:
+            # location_to = 'CPH-sky'
             
         date = '2021-02-19'
         
         response = get_flights(location_from, location_to, date)
         
-        min_price = response['Quotes'][0]['MinPrice'] + ' ISK'
-        carrier = response['Carriers'][0]['Name']
-        from_iata = response['Places'][1]['IataCode']
-        to_iata = response['Places'][0]['IataCode']
+        min_price = str(response['Quotes'][0]['MinPrice']) + ' ISK'
+        carrier = str(response['Carriers'][0]['Name'])
+        from_iata = str(response['Places'][1]['IataCode'])
+        to_iata = str(response['Places'][0]['IataCode'])
         
         # flights = "Airport 1, Airport 2, Price: 125 USD, Departure time: 11:20 AM, Arrival time: 2:10 PM."
-        dispatcher.utter_message("Here are flights from {} to {} on {} with {} for {}".format(from_iata, to_iata, date, carrier, min_price))
+        dispatcher.utter_message("Hér eru flug frá {} til {} á {} með {} fyrir {}".format(from_iata, to_iata, date, carrier, min_price))
 
         return [SlotSet("airline", carrier), SlotSet("airport_to", to_iata), SlotSet("airport_from", from_iata), SlotSet("cost_amount", min_price)]    
