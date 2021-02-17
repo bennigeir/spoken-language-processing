@@ -26,6 +26,48 @@ airport_dict = {
     }
 
 
+class ActionGetAirportInfo(Action):  
+    
+    def list_airports(self, query):
+        
+        url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/US/ISK/is-IS/"
+        
+        querystring = {"query":query}
+        
+        headers = {
+            'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
+            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+            }
+        
+        try:
+            response = requests.request("GET", url, headers=headers, params=querystring).json()['Places']
+            
+            response = [i['PlaceName'] for i in response]
+        except:
+            response = ''
+            
+        return response
+    
+    
+    def name(self) -> Text:
+        return "action_airport_info"
+
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        try:
+            location = airport_dict[tracker.get_slot("location_from")]
+        except:
+            location = 'Reykjavik'
+            
+        response = list_airports(location)
+        
+        
+        dispatcher.utter_message("Here are airports in {}: {}".format(location, str(response)))
+    
+
 class ActionGetFlightInfo(Action):
     
     def get_flights(self, origin_place, destination_place, outbound_partial_date, inbound_partial_date=''):
