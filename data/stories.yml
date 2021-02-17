@@ -5,8 +5,13 @@ stories:
 - story: 
   steps:
     - intent: atis_flight
+    - slot_was_set:
+      - location_to: New York
+      - date_departure: 2021-02-19
+      - location_from: Keflavík
     - action: utter_greet
     - action: action_get_flight_info
-    - intent: atis_flight_time
+    - action: utter_bye
+
     
 
