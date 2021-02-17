@@ -167,6 +167,15 @@ slots:
     influence_conversation: false
 
 forms:
+  booking_essentials:
+    location_to:
+      - type: from_entity
+        entity: location
+        role: to
+    date_arrival:
+      - type: from_entity
+        entity: date
+        role: arrival
   # book_flight:
   #   location_from:
   #     - type: from_entity
@@ -176,24 +185,24 @@ forms:
   #     - type: from_entity
   #       entity: location
   #       role: to
-  book_time_departure:
-    date_departure:
-      - type: from_entity
-        entity: date
-        role: departure
-    time_departure:
-      - type: from_entity
-        entity: time
-        role: departure
-  book_time_arrival:
-    date_arrival:
-      - type: from_entity
-        entity: date
-        role: arrival
-    time_arrival:
-      - type: from_entity
-        entity: time
-        role: arrival
+  # book_time_departure:
+  #   date_departure:
+  #     - type: from_entity
+  #       entity: date
+  #       role: departure
+  #   time_departure:
+  #     - type: from_entity
+  #       entity: time
+  #       role: departure
+  # book_time_arrival:
+  #   date_arrival:
+  #     - type: from_entity
+  #       entity: date
+  #       role: arrival
+  #   time_arrival:
+  #     - type: from_entity
+  #       entity: time
+  #       role: arrival
 
 actions:
   - action_get_flight_info
