@@ -7,12 +7,12 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
-- rule: Activate Form
-  steps:
-  - intent: atis_flight_time
-  - action: book_time_departure
-  - active_loop: book_time_departure
-  
+# - rule: Activate Form
+#   steps:
+#   - intent: atis_flight
+#   - action: booking_essentials
+#   - active_loop: booking_essentials
+
 
 
 

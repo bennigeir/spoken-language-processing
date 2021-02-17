@@ -2,7 +2,7 @@ version: "2.0"
 
 stories:
 
-- story: Story
+- story: Flight story 1
   steps:
     - intent: atis_flight
     - slot_was_set:
@@ -11,6 +11,19 @@ stories:
       - location_from: Keflavík
     - action: utter_greet
     - action: action_get_flight_info
+    - action: utter_bye
+
+- story: Flight story 2
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: atis_flight
+    - slot_was_set:
+      - location_to: New York
+      - date_departure: 2021-02-19
+      - location_from: Keflavík
+    - action: action_get_flight_info
+    - intent: goodbye
     - action: utter_bye
 
     

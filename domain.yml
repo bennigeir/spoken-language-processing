@@ -22,29 +22,29 @@ intents:
 
 responses:
   utter_purpose:
-    - Get ég aðstoðað?
-    - Viltu bóka flug?
+    - text: Get ég aðstoðað?
+    - text: Viltu bóka flug?
   utter_greet:
-    - Hæ
-    - Góðan daginn
-    - Halló
+    - text: Hæ
+    - text: Góðan daginn
+    - text: Halló
   utter_bye:
-    - Bless
-    - Bæ
+    - text: Bless
+    - text: Bæ
   utter_ask_date_to:
-    - Hvaða dag vilt þú fara til {location_to}?
+    - text: Hvaða dag vilt þú fara til {location_to}?
   utter_ask_date_from:
-    - Hvenær viltu fljúga frá {location_from}?
+    - text: Hvenær viltu fljúga frá {location_from}?
   utter_ask_time_arrival:
-    - Hvenær viltu vera kominn til {location_to}?
+    - text: Hvenær viltu vera kominn til {location_to}?
   utter_ask_time_departure:
   utter_ask_location_to:
-    - Hvert viltu fara?
-    - Hvert ætlar þú?
+    - text: Hvert viltu fara?
+    - text: Hvert ætlar þú?
   utter_ask_location_from:
-    - Hvaðan ert þú að fljúga?
+    - text: Hvaðan ert þú að fljúga?
   utter_fallback:
-    - Afsakið getur þú endurtekið þetta?
+    - text: Afsakið getur þú endurtekið þetta?
   utter_inform_flight:
   utter_inform_time:
   utter_inform_date:
