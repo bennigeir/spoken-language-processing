@@ -22,6 +22,8 @@ intents:
 
 responses:
   utter_purpose:
+    - Get ég aðstoðað?
+    - Viltu bóka flug?
   utter_greet:
     - Hæ
     - Góðan daginn
@@ -29,17 +31,23 @@ responses:
   utter_bye:
     - Bless
     - Bæ
-  utter_ask_day_to:
-    - Hvenær vilt þú fara til {location_to}?
-  utter_ask_day_from:
-  utter_ask_time_to:
-  utter_ask_time_from:
+  utter_ask_date_to:
+    - Hvaða dag vilt þú fara til {location_to}?
+  utter_ask_date_from:
+    - Hvenær viltu fljúga frá {location_from}?
+  utter_ask_time_arrival:
+    - Hvenær viltu vera kominn til {location_to}?
+  utter_ask_time_departure:
   utter_ask_location_to:
     - Hvert viltu fara?
     - Hvert ætlar þú?
   utter_ask_location_from:
+    - Hvaðan ert þú að fljúga?
   utter_fallback:
-  utter_inform:
+    - Afsakið getur þú endurtekið þetta?
+  utter_inform_flight:
+  utter_inform_time:
+  utter_inform_date:
   utter_ask_class:
   utter_ask_meal:
 
@@ -115,7 +123,7 @@ slots:
   cost_amount:
     type: text # Maybe float type?
     influence_conversation: false
-  cost_budeget:
+  cost_budget:
     type: text
     influence_conversation: false
   date_arrival:
@@ -158,7 +166,37 @@ slots:
     type: text
     influence_conversation: false
 
+forms:
+  # book_flight:
+  #   location_from:
+  #     - type: from_entity
+  #       entity: location
+  #       role: from
+  #   location_to:
+  #     - type: from_entity
+  #       entity: location
+  #       role: to
+  book_time_departure:
+    date_departure:
+      - type: from_entity
+        entity: date
+        role: departure
+    time_departure:
+      - type: from_entity
+        entity: time
+        role: departure
+  book_time_arrival:
+    date_arrival:
+      - type: from_entity
+        entity: date
+        role: arrival
+    time_arrival:
+      - type: from_entity
+        entity: time
+        role: arrival
 
+actions:
+  - action_get_flight_info
 
 
 
