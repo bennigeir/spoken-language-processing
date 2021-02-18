@@ -144,33 +144,36 @@ class ActionGetFlightInfo(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         airport_dict = {
-        'San Fransisco' : 'SFO-sky',
-        'Chicago' : 'ORD-sky',
-        'New York' : 'JFK-sky',
-        'Stockholm' : 'ARN-sky',
-        'Keflavik' : 'KEF-sky',
-        'Copenhagen' : 'CPH-sky',
-        'Boston' : 'BOS-sky',
+        'san francisco' : 'SFO-sky',
+        'chicago' : 'ORD-sky',
+        'new york' : 'JFK-sky',
+        'stockholm' : 'ARN-sky',
+        'keflavik' : 'KEF-sky',
+        'copenhagen' : 'CPH-sky',
+        'boston' : 'BOS-sky',
         }
 
         try:
-            location_from = airport_dict[tracker.get_slot("location_from")]
+            location_from = airport_dict[next(tracker.get_latest_entity_values(entity_type='location', entity_role='from'), None)]
         except:
             location_from = 'KEF-sky'
-        # try:
-        location_to = airport_dict[tracker.get_slot("location_to")]
-        print(location_to)
-        # except:
-            # location_to = 'CPH-sky'
+        try:
+            location_to = airport_dict[next(tracker.get_latest_entity_values(entity_type='location', entity_role='to'), None)]
+        except:
+            location_to = 'CPH-sky'
+            
+        print(location_to, location_from)
             
         date = '2021-02-19'
         
         response = get_flights(location_from, location_to, date)
         
+        print(response)
+        
         min_price = str(response['Quotes'][0]['MinPrice']) + ' ISK'
         carrier = str(response['Carriers'][0]['Name'])
-        from_iata = str(response['Places'][1]['IataCode'])
-        to_iata = str(response['Places'][0]['IataCode'])
+        from_iata = str(response['Places'][0]['IataCode'])
+        to_iata = str(response['Places'][1]['IataCode'])
         
         # flights = "Airport 1, Airport 2, Price: 125 USD, Departure time: 11:20 AM, Arrival time: 2:10 PM."
         dispatcher.utter_message("Hér eru flug frá {} til {} á {} með {} fyrir {}".format(from_iata, to_iata, date, carrier, min_price))
