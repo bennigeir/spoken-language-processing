@@ -23,3 +23,23 @@ stories:
     - action: action_get_flight_info
     - intent: goodbye
     - action: utter_bye
+
+- story: airport story 1
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: atis_airport
+      entities:
+      - location: "Baltimore"
+    - action: action_airport_info
+    - intent: goodbye
+    - action: utter_bye
+
+- story: airport story 2
+  steps:
+    - intent: atis_airport
+      entities:
+      - location: "Stockholm"
+    - action: action_airport_info
+    - intent: goodbye
+    - action: utter_bye

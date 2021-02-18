@@ -6,58 +6,45 @@
 
 
 # This is a simple example for a custom action which utters "Hello World!"
+import requests
 
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
-import requests
+
+airport_dict = {
+    'san francisco' : 'SFO-sky',
+    'chicago' : 'ORD-sky',
+    'new york' : 'JFK-sky',
+    'stockholm' : 'ARN-sky',
+    'keflavik' : 'KEF-sky',
+    'copenhagen' : 'CPH-sky',
+    'boston' : 'BOS-sky',
+}
 
 
-
-
-
-class ActionGetAirportInfo(Action):  
+def list_airports(query):
     
-    def list_airports(self, query):
-        
-        url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/US/ISK/is-IS/"
-        
-        querystring = {"query":query}
-        
-        headers = {
-            'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
-            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
-            }
-        
-        try:
-            response = requests.request("GET", url, headers=headers, params=querystring).json()['Places']
-            
-            response = [i['PlaceName'] for i in response]
-        except:
-            response = ''
-            
-        return response
+    url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/US/ISK/is-IS/"
     
+    querystring = {"query":query}
     
-    def name(self) -> Text:
-        return "action_airport_info"
-
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        try:
-            location = airport_dict[tracker.get_slot("location_from")]
-        except:
-            location = 'Reykjavik'
-            
-        response = list_airports(location)
+    headers = {
+        'x-rapidapi-key': "1d53092390msh872f0d518a7b979p184f2fjsna099fcd1dc2d",
+        'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+        }
+    
+    try:
+        response = requests.request("GET", url, headers=headers, params=querystring).json()['Places']
         
+        response = [i['PlaceName'] for i in response]
+    except:
+        response = ''
         
-        dispatcher.utter_message("Here are airports in {}: {}".format(location, str(response)))
+    return response
+
 
 def get_flights(origin_place, destination_place, outbound_partial_date, inbound_partial_date=''):
     
@@ -85,6 +72,27 @@ def get_flights(origin_place, destination_place, outbound_partial_date, inbound_
     response = requests.request("GET", url, headers=headers)
     
     return response.json()    
+    
+    
+class ActionGetAirportInfo(Action):  
+
+    def name(self) -> Text:
+        return "action_airport_info"
+
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        try:
+            location = next(tracker.get_latest_entity_values(entity_type='location'), None)
+        except:
+            location = 'Reykjavik'
+            
+        response = ', '.join(list_airports(location))
+        
+        dispatcher.utter_message("Ég fann eftirfarandi flugvelli í {}: {}".format(location, str(response)))
+
 
 class ActionGetFlightInfo(Action):
     
@@ -143,16 +151,6 @@ class ActionGetFlightInfo(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        airport_dict = {
-        'san francisco' : 'SFO-sky',
-        'chicago' : 'ORD-sky',
-        'new york' : 'JFK-sky',
-        'stockholm' : 'ARN-sky',
-        'keflavik' : 'KEF-sky',
-        'copenhagen' : 'CPH-sky',
-        'boston' : 'BOS-sky',
-        }
-
         try:
             location_from = airport_dict[next(tracker.get_latest_entity_values(entity_type='location', entity_role='from'), None)]
         except:
@@ -162,20 +160,19 @@ class ActionGetFlightInfo(Action):
         except:
             location_to = 'CPH-sky'
             
-        print(location_to, location_from)
-            
         date = '2021-02-19'
         
-        response = get_flights(location_from, location_to, date)
+        try:
+            response = get_flights(location_from, location_to, date)
         
-        print(response)
-        
-        min_price = str(response['Quotes'][0]['MinPrice']) + ' ISK'
-        carrier = str(response['Carriers'][0]['Name'])
-        from_iata = str(response['Places'][0]['IataCode'])
-        to_iata = str(response['Places'][1]['IataCode'])
-        
-        # flights = "Airport 1, Airport 2, Price: 125 USD, Departure time: 11:20 AM, Arrival time: 2:10 PM."
-        dispatcher.utter_message("Hér eru flug frá {} til {} á {} með {} fyrir {}".format(from_iata, to_iata, date, carrier, min_price))
+            min_price = str(response['Quotes'][0]['MinPrice']) + ' ISK'
+            carrier = str(response['Carriers'][0]['Name'])
+            from_iata = str(response['Places'][0]['IataCode'])
+            to_iata = str(response['Places'][1]['IataCode'])
+            
+            # flights = "Airport 1, Airport 2, Price: 125 USD, Departure time: 11:20 AM, Arrival time: 2:10 PM."
+            dispatcher.utter_message("Hér eru flug frá {} til {} á {} með {} fyrir {}".format(from_iata, to_iata, date, carrier, min_price))
+        except:
+            dispatcher.utter_message("Ég fann því miður engin flug frá {} til {} þann {}".format(location_from, location_to, date))
 
-        return [SlotSet("airline", carrier), SlotSet("airport_to", to_iata), SlotSet("airport_from", from_iata), SlotSet("cost_amount", min_price)]    
+        # return [SlotSet("airline", carrier), SlotSet("airport_to", to_iata), SlotSet("airport_from", from_iata), SlotSet("cost_amount", min_price)]    
