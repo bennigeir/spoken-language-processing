@@ -14,8 +14,8 @@ import numpy as np
 from playsound import playsound
 
 
-polly_client = boto3.Session(aws_access_key_id='AKIAZAAX7DNLBQDN6WGK',
-                             aws_secret_access_key='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',
+polly_client = boto3.Session(aws_access_key_id='',
+                             aws_secret_access_key='',
                              region_name='eu-west-2').client('polly')
 
 # Token and endpoint for the API call
